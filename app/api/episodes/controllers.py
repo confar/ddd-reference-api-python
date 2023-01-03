@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, Query
 
 from app.api.base_deps import get_limit_offset_pagination_params, get_entity_id_from_path, construct_entity_id_from_id
 from app.api.episodes.deps import get_episode_service
+from app.api.responses import build_responses
 from app.core.shared.domain import EntityId
 from app.core.episodes.dto import EpisodeDTO
 from app.core.episodes.services import EpisodeService
@@ -13,7 +14,8 @@ router = APIRouter()
 @router.get(
     "/episodes",
     name="episodes:get_all",
-    description='Получить список всех эпизодов сериала'
+    description='Получить список всех эпизодов сериала',
+    responses=build_responses(status_code=200, response_model=list[EpisodeDTO])
 )
 async def get_episodes(
     pagination: LimitOffsetPagination = Depends(get_limit_offset_pagination_params),
@@ -26,7 +28,8 @@ async def get_episodes(
 @router.get(
     "/episodes/{id}",
     name="episodes:get_all",
-    description='Получить детальную информацию об эпизоде'
+    description='Получить детальную информацию об эпизоде',
+    responses=build_responses(status_code=200, response_model=EpisodeDTO)
 )
 async def get_episode_detail(
     episode_id: EntityId = Depends(get_entity_id_from_path),

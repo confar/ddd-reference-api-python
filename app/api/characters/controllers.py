@@ -5,6 +5,7 @@ from app.api.characters.deps import get_character_service
 from app.api.characters.serializers import MoveToLocationRequest
 from app.api.episodes.deps import get_episode_service
 from app.api.locations.deps import get_location_service
+from app.api.responses import build_responses
 from app.core.characters.dto import CharacterDTO
 from app.core.characters.services import CharacterService
 from app.core.shared.domain import EntityId
@@ -18,7 +19,8 @@ router = APIRouter()
 @router.get(
     "/characters",
     name="characters:get_all",
-    description='Получить список всех персонажей'
+    description='Получить список всех персонажей',
+    responses=build_responses(status_code=200, response_model=list[CharacterDTO])
 )
 async def get_characters(
     pagination: LimitOffsetPagination = Depends(get_limit_offset_pagination_params),
@@ -31,7 +33,8 @@ async def get_characters(
 @router.get(
     "/characters/{id}",
     name="characters:get_all",
-    description='Получить детальную инфу о конкретном персонаже'
+    description='Получить детальную инфу о конкретном персонаже',
+    responses=build_responses(status_code=200, response_model=CharacterDTO)
 )
 async def get_character_detail(
     character_id: EntityId = Depends(get_entity_id_from_path),
@@ -46,7 +49,8 @@ async def get_character_detail(
     name="characters:get_all",
     description='Приготовиться занять место персонажа. '
                 'В сериале это приводило к побочному эффекту, '
-                'что выбранный персонаж умирает'
+                'что выбранный персонаж умирает',
+    responses=build_responses(status_code=200, response_model=CharacterDTO)
 )
 async def prepare_to_take_characters_place(
     character_id: EntityId = Depends(get_entity_id_from_path),
@@ -59,7 +63,8 @@ async def prepare_to_take_characters_place(
 @router.put(
     "/characters/{id}/resurrect",
     name="characters:resurrect",
-    description='Возродить персонажа'
+    description='Возродить персонажа',
+    responses=build_responses(status_code=200, response_model=CharacterDTO)
 )
 async def resurrect_character(
     character_id: EntityId = Depends(get_entity_id_from_path),
@@ -72,7 +77,8 @@ async def resurrect_character(
 @router.put(
     "/characters/{id}/move",
     name="characters:get_all",
-    description='Переместить персонажа в выбранную локацию'
+    description='Переместить персонажа в выбранную локацию',
+    responses=build_responses(status_code=200, response_model=CharacterDTO)
 )
 async def move_character_to_other_location(
     payload: MoveToLocationRequest,

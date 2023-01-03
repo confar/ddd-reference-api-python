@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends
 from app.api.base_deps import get_limit_offset_pagination_params, get_entity_id_from_path
 from app.api.locations.deps import get_location_service
 from app.api.locations.serializers import MoveToDimensionRequest
+from app.api.responses import build_responses
 from app.core.shared.domain import EntityId
 from app.core.locations.dto import LocationDTO
 from app.core.locations.services import LocationService
@@ -14,7 +15,8 @@ router = APIRouter()
 @router.get(
     "/locations",
     name="locations:get_all",
-    description='Получить список всех локаций'
+    description='Получить список всех локаций',
+    responses=build_responses(status_code=200, response_model=list[LocationDTO])
 )
 async def get_locations(
     pagination: LimitOffsetPagination = Depends(get_limit_offset_pagination_params),
@@ -27,7 +29,8 @@ async def get_locations(
 @router.get(
     "/locations/{id}",
     name="locations:get_all",
-    description='Получить детальную инфу по локации'
+    description='Получить детальную инфу по локации',
+    responses=build_responses(status_code=200, response_model=LocationDTO)
 )
 async def get_location_detail(
     location_id: EntityId = Depends(get_entity_id_from_path),
@@ -40,7 +43,8 @@ async def get_location_detail(
 @router.put(
     "/locations/{id}/move",
     name="locations:get_all",
-    description='Переместить локацию в другое измерение'
+    description='Переместить локацию в другое измерение',
+    responses=build_responses(status_code=200, response_model=LocationDTO)
 )
 async def move_location_to_other_location(
     payload: MoveToDimensionRequest,

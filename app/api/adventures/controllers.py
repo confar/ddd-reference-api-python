@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, Query
 from app.api.adventures.serializers import GoOnAdventureRequest
 from app.api.base_deps import get_entity_id_from_path, construct_entity_id_from_id, construct_entity_ids_from_ids
 from app.api.adventures.deps import get_adventure_service
+from app.api.responses import build_responses
 from app.core.shared.domain import EntityId
 from app.core.adventures.dto import AdventureDTO
 from app.core.adventures.services import AdventureService
@@ -13,7 +14,8 @@ router = APIRouter()
 @router.get(
     "/adventures",
     name="adventures:get_all",
-    description='Получить список всех приключений, которые продолжаются на данный момент'
+    description='Получить список всех приключений, которые продолжаются на данный момент',
+    responses=build_responses(status_code=200, response_model=list[AdventureDTO])
 )
 async def get_active_adventures(
     adventure_service: AdventureService = Depends(get_adventure_service),
@@ -25,7 +27,8 @@ async def get_active_adventures(
 @router.get(
     "/adventures/{id}",
     name="adventures:get_all",
-    description='Получить детальную инфу по приключению'
+    description='Получить детальную инфу по приключению',
+    responses=build_responses(status_code=200, response_model=AdventureDTO)
 )
 async def get_adventure_details(
     adventure_id: EntityId = Depends(get_entity_id_from_path),
@@ -39,8 +42,8 @@ async def get_adventure_details(
     "/adventures",
     name="adventures:go_on_aventure",
     status_code=201,
-    description='Начать новое приключение'
-
+    description='Начать новое приключение',
+    responses=build_responses(status_code=201, response_model=AdventureDTO)
 )
 async def go_on_aventure(
     payload: GoOnAdventureRequest,
