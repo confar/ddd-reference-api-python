@@ -1,0 +1,19 @@
+version: "3.9"
+name: test-hack-api
+
+services:
+  postgresql:
+    image: postgres:15
+    ports:
+      - "6432:5432"
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=hack_api_user
+      - POSTGRES_DB=hack_api_test
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    logging:
+      driver: none
+
+volumes:
+  db_volume:

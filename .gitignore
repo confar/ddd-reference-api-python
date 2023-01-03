@@ -1,0 +1,9 @@
+settings/local.py
+data/
+secrets/
+.pytest_cache
+venv/
+*.pyc
+*.pyo
+*.DS_Store
+.idea/
