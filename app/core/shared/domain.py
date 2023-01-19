@@ -1,4 +1,5 @@
 from app.core.shared.exceptions import InvalidIdError, InvalidNameError
+from dataclasses import dataclass
 
 
 class Name:
@@ -8,9 +9,11 @@ class Name:
         self.value = name
 
 
+@dataclass(frozen=True)
 class EntityId:
-    def __init__(self, id: int):
-        if id < 1:
-            raise InvalidIdError
-        self.value = id
+  value: int
+    
+  def __post_init__(self):
+    if self.value < 1:
+      raise InvalidIdError
 
